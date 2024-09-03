@@ -15,4 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+    
+});
+Route::get('/deni', function () {
+    echo "aku seorang kapiten";
+    
+});
+Route::get('/aselole', function () {
+    echo "nanti malem ajalah biar asik, btw nilai ku gedein ya teh";
+    
 });
