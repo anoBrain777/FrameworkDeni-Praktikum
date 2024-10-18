@@ -3,7 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
-
+use App\Http\Controllers\SupplierController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +23,8 @@ Route::put('/product/{id}', [ProductController::class, 'update']);
 Route::delete('/product/{id}', [ProductController::class, 'destroy']);
 Route::get('/product/create', [ProductController::class, 'create'])->name('product-create');
 Route::post('/product', [ProductController::class, 'store'])->name('product-store');
+Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('supplier-create');
+Route::post('/suppliers', [SupplierController::class, 'store'])->name('supplier-store');
 
 
 Route::get('/', function () {

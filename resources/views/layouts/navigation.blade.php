@@ -19,6 +19,7 @@
             </div>
 
 <!-- Data master Dropdown -->
+<!-- Data master Dropdown -->
 <div class="hidden sm:flex sm:items-center sm:ms-6">
     <x-dropdown align="right" width="48">
         <x-slot name="trigger">
@@ -35,6 +36,9 @@
         <x-slot name="content">
             <x-dropdown-link :href="route('product-create')">
                 Product Master
+            </x-dropdown-link>
+            <x-dropdown-link :href="route('supplier-create')">
+                Supplier Master
             </x-dropdown-link>
         </x-slot>
     </x-dropdown>
