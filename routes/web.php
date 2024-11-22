@@ -31,6 +31,7 @@ Route::middleware(['auth', 'RoleCheck:admin'])->group(function () {
     Route::put('/product/{id}', [ProductController::class, 'update'])->name("product-update");
     Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name("product-deleted");
     Route::get('/products', [ProductController::class, 'index'])->name('product');
+    Route::get('/products', [ProductController::class, 'index'])->name('product.index');
 
 });
 
@@ -47,5 +48,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::get('/product/export/excel', [ProductController::class,'exportExcel'])->name('product-export-excel');
 
 require __DIR__.'/auth.php';
