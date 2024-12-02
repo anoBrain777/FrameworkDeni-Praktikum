@@ -44,6 +44,7 @@
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">Type</th>
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">Information</th>
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">Qty</th>
+            <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">Supplier_name</th>
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">Producer</th>
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">Aksi</th>
           </tr>

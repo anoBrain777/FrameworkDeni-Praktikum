@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
@@ -31,7 +32,7 @@ Route::middleware(['auth', 'RoleCheck:admin'])->group(function () {
     Route::put('/product/{id}', [ProductController::class, 'update'])->name("product-update");
     Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name("product-deleted");
     Route::get('/products', [ProductController::class, 'index'])->name('product');
-    Route::get('/products', [ProductController::class, 'index'])->name('product.index');
+    
 
 });
 

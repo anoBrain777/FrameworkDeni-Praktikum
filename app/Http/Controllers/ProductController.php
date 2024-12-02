@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\ProductsExport;
 use App\Models\product;
+use App\Models\supplier;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -16,7 +17,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         // Inisialisasi query untuk mengambil data produk
-        $query = Product::query();
+        $query = Product::with('supplier');
 
         // Cek apakah ada parameter 'search' di request
         if ($request->has('search') && $request->search != '') {
@@ -32,7 +33,7 @@ class ProductController extends Controller
 
         // Ambil data produk sesuai query, dengan pagination
         $data = $query->paginate(10);  // Ganti 10 dengan jumlah per halaman yang diinginkan
-
+       // return $data;
         // Kembalikan view dengan data produk
         return view("master-data.product-master.index-product", compact('data'));
     }
@@ -42,7 +43,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view("master-data.product-master.create-product");
+        $suppliers = supplier::all();
+        return view("master-data.product-master.create-product",compact('suppliers')) ;
     }
 
     /**
@@ -58,6 +60,7 @@ class ProductController extends Controller
             'information'  => 'nullable|string',
             'qty'          => 'required|integer',
             'producer'     => 'required|string|max:255',
+            'supplier_id'=> 'required|exists:suppliers,id',
         ]);
 
         // Proses simpan data ke dalam database
@@ -80,36 +83,45 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::findOrFail($id);
-        return view('master-data.product-master.edit-product', compact('product'));
+    $product = Product::findOrFail($id); // Mendapatkan data produk berdasarkan ID
+    $suppliers = Supplier::all(); // Mengambil semua data supplier
+    return view('master-data.product-master.edit-product', compact('product', 'suppliers')); // Mengirimkan data produk dan suppliers ke view
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'product_name' => 'required|string|max:255',
-            'unit' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'information' => 'nullable|string',
-            'qty' => 'required|integer|min:1',
-            'producer' => 'required|string|max:255',
-        ]);
+{
+    // Validasi input data
+    $validated = $request->validate([
+        'product_name' => 'required|string|max:255',
+        'unit' => 'required|string|max:255',
+        'type' => 'required|string|max:255',
+        'information' => 'nullable|string',
+        'qty' => 'required|integer|min:1',
+        'producer' => 'required|string|max:255',
+        'supplier_id' => 'required|exists:suppliers,id', // Validasi supplier_id
+    ]);
 
-        $product = Product::findOrFail($id);
-        $product->update([
-            'product_name' => $request->product_name,
-            'unit' => $request->unit,
-            'type' => $request->type,
-            'information' => $request->information,
-            'qty' => $request->qty,
-            'producer' => $request->producer,
-        ]);
+    // Ambil data produk berdasarkan ID
+    $product = Product::findOrFail($id);
 
-        return redirect()->back()->with('success', 'Product updated successfully');
-    }
+    // Update produk dengan data yang telah tervalidasi
+    $product->update([
+        'product_name' => $validated['product_name'],
+        'unit' => $validated['unit'],
+        'type' => $validated['type'],
+        'information' => $validated['information'],
+        'qty' => $validated['qty'],
+        'producer' => $validated['producer'],
+        'supplier_id' => $validated['supplier_id'],  // Update supplier_id yang sudah tervalidasi
+    ]);
+
+    return redirect()->route('product-index')->with('success', 'Product updated successfully');
+}
+
 
     /**
      * Remove the specified resource from storage.
